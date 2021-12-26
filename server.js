@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const wsServer = new WebSocket.Server({port: 9000});
+const wsServer = new WebSocket.Server({port: 80});
 wsServer.on('connection', onConnect);
 
 class Client {
