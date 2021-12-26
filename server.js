@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const usedPort = process.env.PORT || 8080;
-const wsServer = new WebSocket.Server({port: usedPort});
+const wsServer = new WebSocket.Server({port: 8282});
 wsServer.on('connection', onConnect);
 
 class Client {
@@ -52,5 +52,15 @@ function onConnect(wsClient) {
     });
   })
 }
+
+http = require("http");
+const hostname = "https://mars-chat-server.herokuapp.com/";
+const host_port = usedPort;
+
+const server = http.createServer();
+server.on("request", (request, res) => {
+  res.end("Hello World! This is my first pure Node.js server. usedPort: " + usedPort);
+});
+
 
 console.log('Сервер запущен на порту ' + usedPort);
