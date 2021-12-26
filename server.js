@@ -53,14 +53,4 @@ function onConnect(wsClient) {
   })
 }
 
-http = require("http");
-const hostname = "mars-chat-server.herokuapp.com";
-const host_port = usedPort;
-
-const server = http.createServer();
-server.on("request", (request, res) => {
-  res.end("Hello World! This is my first pure Node.js server. usedPort: " + usedPort);
-});
-
-
 console.log('Сервер запущен на порту ' + usedPort);
