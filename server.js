@@ -54,7 +54,7 @@ function onConnect(wsClient) {
 }
 
 http = require("http");
-const hostname = "https://mars-chat-server.herokuapp.com/";
+const hostname = "mars-chat-server.herokuapp.com";
 const host_port = usedPort;
 
 const server = http.createServer();
