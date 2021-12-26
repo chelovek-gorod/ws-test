@@ -53,11 +53,4 @@ function onConnect(wsClient) {
   })
 }
 
-var http = require('http');
-//create a server object:
-http.createServer(function (req, res) {
-  res.write('Сервер запущен на порту ' + usedPort); //write a response
-  res.end(); //end the response
-}).listen(usedPort, function(){
- console.log("server start at port 3000"); //the server object listens on port 3000
-});
+console.log('Сервер запущен на порту ' + usedPort);
