@@ -52,4 +52,11 @@ function onConnect(wsClient) {
     });
   })
 }
-console.log('Сервер запущен на 9000 порту');
+
+let showPortCounter = 0;
+let portShows = 1000;
+function showPort() {
+  console.log('Сервер запущен на порту ' + usedPort);
+  showPortCounter++;
+  if (showPortCounter < portShows) setTimeout(showPort, 100);
+}
