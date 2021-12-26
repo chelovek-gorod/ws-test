@@ -9,29 +9,46 @@ class Client {
   }
 }
 
-let counter = 1;
 let clients = [];
 
 function onConnect(wsClient) {
-  console.log('Новый пользователь');
-  let client = new Client(wsClient, counter)
-  clients.push(client);
-
-  // отправка приветственного сообщения клиенту
-  wsClient.send(JSON.stringify({action: 'NEW', data: counter}));
+  console.log('Новое подключение');
   wsClient.on('message', function(message) {
     const jsonMessage = JSON.parse(message);
-    clients.forEach(obj => {
-      obj.id.send(JSON.stringify({action: 'MSG', data: jsonMessage.id + ": " + jsonMessage.data}));
-    });
+    switch(jsonMessage.action) {
+      case 'REG' :
+        let userExist = clients.find(object => {
+          if (object.name === jsonMessage.data) return true;
+        });
+        if (userExist) {
+          wsClient.send(JSON.stringify({action: 'REG', data: false}));
+        } else {
+          let client = new Client(wsClient, jsonMessage.data)
+          clients.push(client);
+          console.log('Зарегился: ' + jsonMessage.data);
+          wsClient.send(JSON.stringify({action: 'REG', data: true}));
+        }
+        break;
+      case 'MSG' :
+        clients.forEach(client => {
+          client.id.send(JSON.stringify({
+            action: 'MSG',
+            data: {user: jsonMessage.data.user, message: jsonMessage.data.message}
+          }));
+        });
+        break;
+      default : console.log('-- пришол кривой action --');
+    }
   })
   wsClient.on('close', function() {
-    clients = clients.filter(obj => obj.id !== wsClient);
-    clients.forEach(obj => {
-      obj.id.send(JSON.stringify({action: 'MSG', data: client.name + " отключился..."}));
+    clients = clients.filter(client => client !== wsClient);
+    console.log('-- отключение --');
+    clients.forEach(client => {
+      client.id.send(JSON.stringify({
+        action: 'MSG',
+        data: {user: "<!>", message: client.name + " отключился..."}
+      }));
     });
   })
-  counter++;
 }
-
 console.log('Сервер запущен на 9000 порту');
