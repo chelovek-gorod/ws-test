@@ -32,6 +32,7 @@ function onConnect(socketClient) {
   socketClient.on('message', function (message) {
     let { action, data } = JSON.parse(message);
     switch (action) {
+      case 'firstConnect' : getFreeAvatarsRequest(socketClient); break;
       case 'registration' : getRegistrationRequest(socketClient, data); break;
       case 'onConnect' : getOnConnectRequest(socketClient, data); break;
       case 'newMessage' : getNewMessageRequest(socketClient,data); break;
@@ -58,11 +59,9 @@ function onConnect(socketClient) {
 }
 console.log(`server start on port ${usedPort}`);
 
-function getOnConnectRequest(socketClient, data) {
-  socketClient.send(JSON.stringify({
-    action: 'onConnect',
-    data: { clientSendTime: data, serverSendTime: Date.now() }
-  }));
+function getFreeAvatarsRequest(socketClient) {
+  let avatarsArr = clientsArr.map(client => client.avatar);
+  socketClient.send(JSON.stringify({ action: 'firstConnect', data: avatarsArr }));
 }
 
 function getRegistrationRequest(socketClient, data) {
@@ -100,6 +99,13 @@ function getRegistrationRequest(socketClient, data) {
     }
   }));
 
+}
+
+function getOnConnectRequest(socketClient, data) {
+  socketClient.send(JSON.stringify({
+    action: 'onConnect',
+    data: { clientSendTime: data, serverSendTime: Date.now() }
+  }));
 }
 
 function getNewMessageRequest(socketClient, data) {
