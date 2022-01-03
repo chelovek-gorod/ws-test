@@ -55,7 +55,7 @@ function onConnect(socketClient) {
 
   socketClient.on('close', function () {
 
-    let target = clientsArr.find(client => client.id !== socketClient);
+    let target = clientsArr.find(client => client.id === socketClient);
     clientsArr = clientsArr.filter(client => client.id !== socketClient);
     console.log('user disconnect');
 
@@ -92,13 +92,14 @@ function getRegistrationRequest(socketClient, data) {
     clientsArr.push(client);
   }
 
+  let messages = (registrationIs) ? messagesArr : [];
   socketClient.send(JSON.stringify({
     action: 'registration',
     data: {
       registrationIs: registrationIs,
       userAvatarExist : userAvatarExist,
       userNickNameExist : userNickNameExist,
-      messages: []
+      messages: messages
     }
   }));
 
