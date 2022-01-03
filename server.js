@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const lastUpdateDate = '1-01-2022';
+const lastUpdateDate = '3-01-2022';
 
 const usedPort = process.env.PORT || 9000;
 const socketServer = new WebSocket.Server({ port: usedPort });
@@ -56,6 +56,7 @@ function onConnect(socketClient) {
   socketClient.on('close', function () {
 
     let target = clientsArr.find(client => client.id === socketClient);
+    if (!target) target = {avatar: 'avenger', nickName: '-=Avenger=-'};
     clientsArr = clientsArr.filter(client => client.id !== socketClient);
     console.log('user disconnect');
 
