@@ -56,12 +56,26 @@ function onConnect(socketClient) {
   socketClient.on('close', function () {
 
     let target = clientsArr.find(client => client.id === socketClient);
+    if (!target) {
+      console.log('>>> unnoun disconnection <<<');
+      console.log('clientsArr.length before clear =', clientsArr.length);
+      clientsArr = clientsArr.filter(client => client.id !== socketClient);
+      console.log('clientsArr.length after clear =', clientsArr.length);
+    } else {
+      clientsArr = clientsArr.filter(client => client.id !== socketClient);
+      console.log('user disconnect');
+
+      let message = new Message(null, target, 'disconnect', null);
+      addNewMessage(message);
+    }
+    /*
     if (!target) target = {avatar: 'avenger', nickName: '-=Avenger=-'};
     clientsArr = clientsArr.filter(client => client.id !== socketClient);
     console.log('user disconnect');
 
     let message = new Message(null, target, 'disconnect', null);
     addNewMessage(message);
+    */
   });
 
 }
