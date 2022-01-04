@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const lastUpdateDate = '4-01-2022';
-let lastServerStart = Date.now().toISOString().slice(0, 19).replace('T', ' '));
+let lastServerStart = new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' ');
 
 const usedPort = process.env.PORT || 9000;
 const socketServer = new WebSocket.Server({ port: usedPort });
